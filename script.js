@@ -1,0 +1,3 @@
+let Gameboard = {
+  let courseOfGame = [];
+}

@@ -1,0 +1,70 @@
+body {
+  background-image: url('./assets/wall.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-sizing: border-box;
+  font-family: 'Walter Turncoat', cursive;
+}
+
+.game-container {
+  background-image: url('./assets/blackboard.jpg');
+  background-size: cover;
+  border: 15px solid #6B553B;
+  height: 500px;
+  margin: 0 auto;
+  position: relative;
+  width: 800px;
+}
+
+.game-wrapper {
+  margin: 0 auto;
+  position: relative;
+  width: 535px;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
+
+.gameboard {
+  background-color: transparent;
+  height: 474px;
+  width: 474px;
+    margin-right: 100px;
+}
+
+.game-spaces {
+  list-style-type: none;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(3, 165px);
+  grid-template-rows: repeat(3, 135px);
+}
+
+.game-spaces li {
+  display: inline-block;
+  height: 135px;
+  width: 165px;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-spaces li:hover {
+  cursor: url('./assets/cursor.cur'), auto;
+}
+
+li img {
+  height: 100px;
+  width: 100px;
+  padding-left: 30px;
+  padding-top: 13px;
+}
+
+.game-mark {
+  height: 100px;
+  width: 100px;
+}
