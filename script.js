@@ -35,19 +35,40 @@ function createMarks() {
   };
 }
 
-for (let i = 1; i <= 9; i++) {
-  let playerXisOn;
+function drawOnBoard() {
+  let playerXisOn = false;
   let playerOisOn = true;
-  playerOisOn ? playerXisOn = false : playerXisOn;
-  playerXisOn ? playerOisOn = false : playerOisOn;
-  let whichBox = `box${i}`;
-  this[whichBox].addEventListener('click', () => {
-    let mark = createMarks();
-    if (this[whichBox].hasChildNodes()) {
-      console.log('Clicked again in the same box. Doing nothing.');
-    } else {
-      playerOisOn ? this[whichBox].appendChild(mark.circle) : this[whichBox].appendChild(mark.xMark);
-    }
-  });
-  playerOisOn ? playerXisOn : playerOisOn;
+
+  for (let i = 1; i <= 9; i++) {
+
+    let whichBox = `box${i}`;
+
+    this[whichBox].addEventListener('click', () => {
+      playerOisOn ? playerXisOn = false : playerXisOn;
+      playerXisOn ? playerOisOn = false : playerOisOn;
+      let mark = createMarks();
+
+      if (this[whichBox].hasChildNodes()) {
+        console.log('Clicked again in the same box. Doing nothing.');
+      } else {
+        playerOisOn ? this[whichBox].appendChild(mark.circle)
+              : this[whichBox].appendChild(mark.xMark);
+      }
+
+      if (playerOisOn) {
+        playerXisOn = true;
+        playerOisOn = false;
+      } else {
+        playerOisOn = true;
+        playerXisOn = false;
+      }
+    });
+
+  }
+}
+
+drawOnBoard();
+
+let winCondition = () => {
+  
 }

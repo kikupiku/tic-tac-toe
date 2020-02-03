@@ -24,6 +24,51 @@ body {
   padding-top: 10px;
 }
 
+.game-wrapper img {
+  position: absolute;
+  display: none;
+}
+
+#top-hor {
+  top: -65px;
+}
+
+#mid-hor {
+  top: 70px;
+}
+
+#bot-hor {
+  bottom: -40px;
+}
+
+.vertical {
+  transform: rotate(90deg);
+  top: 140px;
+  width: 420px;
+}
+
+#left-vert {
+  left: -80px;
+}
+
+#mid-vert {
+  left: 90px;
+}
+
+#right-vert {
+  left: 260px;
+}
+
+#across-down-to-right {
+  top: 80px;
+  transform: rotate(40deg);
+}
+
+#across-up-to-right {
+  top: 70px;
+  transform: rotate(-40deg);
+}
+
 h1 {
   text-align: center;
   font-size: 50px;
