@@ -44,14 +44,14 @@ function drawOnBoard() {
           xMark.className += 'x-mark ';
           xMark.className += 'game-mark';
         }
-      }
 
-      if (playerOisOn) {
-        playerXisOn = true;
-        playerOisOn = false;
-      } else {
-        playerOisOn = true;
-        playerXisOn = false;
+        if (playerOisOn) {
+          playerXisOn = true;
+          playerOisOn = false;
+        } else {
+          playerOisOn = true;
+          playerXisOn = false;
+        }
       }
 
       checkIfWin();

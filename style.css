@@ -9,13 +9,12 @@ body {
 #win-message {
   position: absolute;
   z-index: 1000;
-  border: 1px solid red;
+  background: rgb(228,209,167);
   width: 540px;
   height: 90px;
   left: 50%;
   margin-left: -270px;
-  top: 50%;
-  margin-top: -45px;
+  top: 81%;
   border-radius: 20px;
   text-align: center;
   color: white;
