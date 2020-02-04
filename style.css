@@ -145,3 +145,18 @@ img.x-mark {
   background: url(./assets/x-mark.png);
   z-index: 1000;
 }
+
+.turn-container {
+  background-color: #e4d1a7;
+  border: 2px solid #6b553b;
+  border-radius: 10px;
+  margin: 30px auto;
+  position: relative;
+  font-size: 40px;
+  text-align: center;
+  width: 300px;
+}
+
+.turn-container p {
+  margin: 0;
+}

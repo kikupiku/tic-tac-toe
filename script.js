@@ -17,6 +17,7 @@ let box6 = document.getElementById('box6');
 let box7 = document.getElementById('box7');
 let box8 = document.getElementById('box8');
 let box9 = document.getElementById('box9');
+let turnToggle = document.getElementById('player');
 
 function drawOnBoard() {
   let playerXisOn = false;
@@ -48,9 +49,11 @@ function drawOnBoard() {
         if (playerOisOn) {
           playerXisOn = true;
           playerOisOn = false;
+          turnToggle.innerHTML = 'Player X,';
         } else {
           playerOisOn = true;
           playerXisOn = false;
+          turnToggle.innerHTML = 'Player O,';
         }
       }
 
