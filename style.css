@@ -6,6 +6,24 @@ body {
   font-family: 'Walter Turncoat', cursive;
 }
 
+#win-message {
+  position: absolute;
+  z-index: 1000;
+  border: 1px solid red;
+  width: 540px;
+  height: 90px;
+  left: 50%;
+  margin-left: -270px;
+  top: 50%;
+  margin-top: -45px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 70px;
+  display: none;
+}
+
 .game-container {
   background-image: url('./assets/blackboard.jpg');
   background-size: cover;
@@ -59,12 +77,12 @@ body {
   left: 260px;
 }
 
-#across-down-to-right {
+#down-to-right {
   top: 80px;
   transform: rotate(40deg);
 }
 
-#across-up-to-right {
+#up-to-right {
   top: 70px;
   transform: rotate(-40deg);
 }
@@ -107,6 +125,11 @@ li img {
   padding-left: 30px;
   padding-top: 13px;
   display: block !important;
+  border: 0;
+}
+
+li img:focus {
+  outline: none;
 }
 
 .game-mark {
