@@ -160,3 +160,12 @@ img.x-mark {
 .turn-container p {
   margin: 0;
 }
+
+#replay {
+  height: 50px;
+  display: none;
+}
+
+#replay:hover {
+  cursor: pointer;
+}
