@@ -9,9 +9,11 @@ function getBox(boxId) {
   };
 }
 
+let startBoard = document.getElementById('starting-board');
 let whichPlayer = document.getElementById('player');
 let message = document.getElementById('turn-or-win');
 let replay = document.getElementById('replay');
+let statusBar = document.getElementById('turn-container');
 
 function makeAMove(whichBox) {
   playerOisOn ? playerXisOn = false : playerXisOn;
@@ -52,6 +54,8 @@ let play = function (event) {
 };
 
 function drawOnBoard() {
+  statusBar.style.display = 'block';
+  startBoard.style.display = 'none';
   playerXisOn = false;
   playerOisOn = true;
 
@@ -61,7 +65,7 @@ function drawOnBoard() {
   }
 }
 
-drawOnBoard();
+// drawOnBoard();
 
 function checkIfWin() {
 

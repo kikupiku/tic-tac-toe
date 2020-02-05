@@ -6,23 +6,6 @@ body {
   font-family: 'Walter Turncoat', cursive;
 }
 
-#win-message {
-  position: absolute;
-  z-index: 1000;
-  background: rgb(228,209,167);
-  width: 540px;
-  height: 90px;
-  left: 50%;
-  margin-left: -270px;
-  top: 81%;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  font-size: 70px;
-  display: none;
-}
-
 .game-container {
   background-image: url('./assets/blackboard.jpg');
   background-size: cover;
@@ -31,6 +14,20 @@ body {
   margin: 0 auto;
   position: relative;
   width: 800px;
+}
+
+#starting-board {
+  border: 15px solid black;
+  height: 500px;
+  margin: 0 auto;
+  position: relative;
+  bottom: 15px;
+  right: 15px;
+  width: 800px;
+  z-index: 1000;
+  background-color: #a4508b;
+background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
+
 }
 
 .game-wrapper {
@@ -146,7 +143,7 @@ img.x-mark {
   z-index: 1000;
 }
 
-.turn-container {
+#turn-container {
   background-color: #e4d1a7;
   border: 2px solid #6b553b;
   border-radius: 10px;
@@ -155,9 +152,10 @@ img.x-mark {
   font-size: 40px;
   text-align: center;
   width: 300px;
+  display: none;
 }
 
-.turn-container p {
+#turn-container p {
   margin: 0;
 }
 
