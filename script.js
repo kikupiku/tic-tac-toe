@@ -230,6 +230,7 @@ function checkIfWin() {
         getBox(`box${i}`).num.firstElementChild.setAttribute('src', './assets/transparent.png');
       }
 
+      whichPlayer.innerHTML = 'Player O'
       message.innerHTML = 'It\'s your turn!';
       drawOnBoard();
       replay.style.display = 'none';
