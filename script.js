@@ -1,3 +1,28 @@
+let whichPlayer = document.getElementById('player');
+let message = document.getElementById('turn-or-win');
+let replay = document.getElementById('replay');
+let statusBar = document.getElementById('turn-container');
+let startBoard = document.getElementById('starting-board');
+let usedBoxes = [];
+
+(function begin() {
+  let startButton = document.getElementById('start');
+  let _oneVsPC = document.getElementById('one-player');
+  let _oneVsOne = document.getElementById('two-players');
+  let _smartPC = document.getElementById('smart-comp');
+
+  startButton.addEventListener('click', () => {
+    if (_oneVsOne.checked) {
+      drawOnBoard('two');
+    } else if (_oneVsPC.checked) {
+      drawOnBoard('one-dumb');
+    } else if (_smartPC.checked) {
+      alert('under construction');
+    }
+
+  });
+})();
+
 let playerXisOn;
 let playerOisOn;
 
@@ -9,76 +34,78 @@ function getBox(boxId) {
   };
 }
 
-let startBoard = document.getElementById('starting-board');
-let startButton = document.getElementById('start');
-let whichPlayer = document.getElementById('player');
-let message = document.getElementById('turn-or-win');
-let replay = document.getElementById('replay');
-let statusBar = document.getElementById('turn-container');
+let randomPlay = function () {
+  let randomMove = Math.floor((Math.random() * 9) + 1);
 
-(function triggerBeginning() {
+  let whichBox = getBox(`box${randomMove}`).num;
+  makeAMove(whichBox, randomMove);
+};
 
-  let _oneVsPC = document.getElementById('one-player');
-  let _oneVsOne = document.getElementById('two-players');
-  startButton.addEventListener('click', () => {
-
-    if (_oneVsOne.checked) {
-      drawOnBoard();
-      statusBar.style.display = 'block';
-      startBoard.style.display = 'none';
-    } else if (_oneVsPC.checked) {
-      console.log('under construction');
-    }
-
-  });
-})();
-
-function makeAMove(whichBox) {
-  playerOisOn ? playerXisOn = false : playerXisOn;
-  playerXisOn ? playerOisOn = false : playerOisOn;
-
-  if (whichBox.firstElementChild.hasAttribute('class')) {
-    console.log('Clicked again in the same box. Doing nothing.');
-  } else {
-    if (playerOisOn) {
-      let oMark = whichBox.firstElementChild;
-      oMark.setAttribute('src', './assets/circle.png');
-      oMark.className += 'circle ';
-      oMark.className += 'game-mark';
-    } else {
-      let xMark = whichBox.firstElementChild;
-      xMark.setAttribute('src', './assets/x-mark.png');
-      xMark.className += 'x-mark ';
-      xMark.className += 'game-mark';
-    }
-
-    if (playerOisOn) {
-      playerXisOn = true;
-      playerOisOn = false;
-      whichPlayer.innerHTML = 'Player X,';
-    } else {
-      playerOisOn = true;
-      playerXisOn = false;
-      whichPlayer.innerHTML = 'Player O,';
-    }
-  }
-
-  checkIfWin();
-}
-
-let play = function (event) {
+let humanPlay = function (event) {
   let whichBox = event.currentTarget;
   makeAMove(whichBox);
 };
 
-function drawOnBoard() {
-  playerXisOn = false;
+function drawOnBoard(playerMode) {
+  statusBar.style.display = 'block';
+  startBoard.style.display = 'none';
   playerOisOn = true;
+  playerXisOn = false;
+  console.log(playerMode);
 
-  for (let i = 1; i <= 9; i++) {
-    let whichBox = getBox(`box${i}`).num;
-    whichBox.addEventListener('click', play);
+  if (playerMode === 'one-dumb') {
+    for (let move = 1; move <= 9; move++) {
+      if (move % 2 === 1) {
+        for (let i = 1; i <= 9; i++) {
+          let whichBox = getBox(`box${i}`).num;
+          whichBox.addEventListener('click', humanPlay);
+        }
+      } else if (move % 2 === 0) {
+        for (let i = 1; i <= 9; i++) {
+          let whichBox = getBox(`box${i}`).num;
+          whichBox.addEventListener('click', randomPlay);
+        }
+      }
+    }
+  } else if (playerMode === 'two') {
+    for (let i = 1; i <= 9; i++) {
+      let whichBox = getBox(`box${i}`).num;
+      whichBox.addEventListener('click', humanPlay);
+    }
   }
+
+}
+
+function makeAMove(whichBox, randomMove) {
+  playerOisOn ? playerXisOn = false : playerXisOn;
+  playerXisOn ? playerOisOn = false : playerOisOn;
+
+  if (playerOisOn && !whichBox.firstElementChild.hasAttribute('class')) {
+    let oMark = whichBox.firstElementChild;
+    oMark.setAttribute('src', './assets/circle.png');
+    oMark.className += 'circle ';
+    oMark.className += 'game-mark';
+    playerXisOn = true;
+    playerOisOn = false;
+    whichPlayer.innerHTML = 'Player X,';
+  } else if (playerXisOn && !whichBox.firstElementChild.hasAttribute('class')) {
+    let xMark = whichBox.firstElementChild;
+    xMark.setAttribute('src', './assets/x-mark.png');
+    xMark.className += 'x-mark ';
+    xMark.className += 'game-mark';
+    playerOisOn = true;
+    playerXisOn = false;
+    whichPlayer.innerHTML = 'Player O,';
+    usedBoxes.push(whichBox);
+  } else if (playerOisOn && whichBox.firstElementChild.hasAttribute('class')
+            && usedBoxes.contains(whichBox)) {
+    console.log('Clicked again in the same box. Doing nothing.');
+  } else {
+    randomPlay();
+    console.log('rando redid');
+  }
+
+  checkIfWin();
 }
 
 function checkIfWin() {
@@ -106,7 +133,8 @@ function checkIfWin() {
 
     for (let i = 1; i <= 9; i++) {
       let whichBox = getBox(`box${i}`).num;
-      whichBox.removeEventListener('click', play);
+      whichBox.removeEventListener('click', humanPlay);
+      whichBox.removeEventListener('click', randomPlay);
     }
 
     replay.style.display = 'inline-block';
@@ -122,7 +150,6 @@ function checkIfWin() {
       }
     }
 
-    console.log(boxes);
     if (boxes.length === 9) {
       tie = true;
     }
@@ -230,7 +257,7 @@ function checkIfWin() {
         getBox(`box${i}`).num.firstElementChild.setAttribute('src', './assets/transparent.png');
       }
 
-      whichPlayer.innerHTML = 'Player O'
+      whichPlayer.innerHTML = 'Player O';
       message.innerHTML = 'It\'s your turn!';
       drawOnBoard();
       replay.style.display = 'none';
