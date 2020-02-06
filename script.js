@@ -4,6 +4,7 @@ let replay = document.getElementById('replay');
 let statusBar = document.getElementById('turn-container');
 let startBoard = document.getElementById('starting-board');
 let usedBoxes = [];
+let mode;
 
 (function begin() {
   let startButton = document.getElementById('start');
@@ -14,8 +15,10 @@ let usedBoxes = [];
   startButton.addEventListener('click', () => {
     if (_oneVsOne.checked) {
       drawOnBoard('two');
+      mode = 'two';
     } else if (_oneVsPC.checked) {
       drawOnBoard('one-dumb');
+      mode = 'one-dumb';
     } else if (_smartPC.checked) {
       alert('under construction');
     }
@@ -129,7 +132,7 @@ function checkIfWin() {
 
   function triggerWin(player, line) {
     whichPlayer.innerHTML = player;
-    message.innerHTML = 'You win!';
+    message.innerHTML = 'wins!';
 
     for (let i = 1; i <= 9; i++) {
       let whichBox = getBox(`box${i}`).num;
@@ -259,7 +262,7 @@ function checkIfWin() {
 
       whichPlayer.innerHTML = 'Player O';
       message.innerHTML = 'It\'s your turn!';
-      drawOnBoard();
+      drawOnBoard(mode);
       replay.style.display = 'none';
     });
 
