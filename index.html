@@ -9,7 +9,15 @@
   <body>
     <h1>TIC TAC TOE</h1>
     <div class="game-container">
-      <div id="starting-board"></div>
+      <div id="starting-board">
+        <h2>Welcome!</h2>
+        <h3>choose the number of players</h3>
+        <div class="option-wrapper">
+          <input type="radio" name="no-of-players" id="one-player">You against the computer
+          <input type="radio" name="no-of-players" id="two-players">Two players
+        </div>
+        <button id="start">PLAY</button>
+      </div>
       <div class="game-wrapper">
         <img src="./assets/line.png" alt="" id="top-hor">
         <img src="./assets/line.png" alt="" id="mid-hor">

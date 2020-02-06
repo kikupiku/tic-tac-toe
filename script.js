@@ -10,10 +10,28 @@ function getBox(boxId) {
 }
 
 let startBoard = document.getElementById('starting-board');
+let startButton = document.getElementById('start');
 let whichPlayer = document.getElementById('player');
 let message = document.getElementById('turn-or-win');
 let replay = document.getElementById('replay');
 let statusBar = document.getElementById('turn-container');
+
+(function triggerBeginning() {
+
+  let _oneVsPC = document.getElementById('one-player');
+  let _oneVsOne = document.getElementById('two-players');
+  startButton.addEventListener('click', () => {
+
+    if (_oneVsOne.checked) {
+      drawOnBoard();
+      statusBar.style.display = 'block';
+      startBoard.style.display = 'none';
+    } else if (_oneVsPC.checked) {
+      console.log('under construction');
+    }
+
+  });
+})();
 
 function makeAMove(whichBox) {
   playerOisOn ? playerXisOn = false : playerXisOn;
@@ -54,8 +72,6 @@ let play = function (event) {
 };
 
 function drawOnBoard() {
-  statusBar.style.display = 'block';
-  startBoard.style.display = 'none';
   playerXisOn = false;
   playerOisOn = true;
 
@@ -64,8 +80,6 @@ function drawOnBoard() {
     whichBox.addEventListener('click', play);
   }
 }
-
-// drawOnBoard();
 
 function checkIfWin() {
 
