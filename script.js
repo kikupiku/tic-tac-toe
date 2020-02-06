@@ -113,6 +113,25 @@ function checkIfWin() {
     reset(line);
   }
 
+  let isItATie = function () {
+    let boxes = [];
+    let tie;
+    for (let i = 1; i <= 9; i++) {
+      if (getBox(`box${i}`).num.firstElementChild.hasAttribute('class')) {
+        boxes.push(getBox(`box${i}`).num);
+      }
+    }
+
+    console.log(boxes);
+    if (boxes.length === 9) {
+      tie = true;
+    }
+
+    return {
+      tie,
+    };
+  };
+
   if ((checkMark(box1, 'circle').fullBox) &&
       (checkMark(box2, 'circle').fullBox) &&
       (checkMark(box3, 'circle').fullBox)) {
@@ -193,6 +212,11 @@ function checkIfWin() {
              (checkMark(box7, 'x-mark').fullBox)) {
     triggerWin('player X', 'up-to-right');
     getWinLine('up-to-right').line.style.display = 'block';
+  } else if (isItATie().tie === true) {
+    whichPlayer.innerHTML = 'It\'s a tie';
+    message.innerHTML = 'replay?';
+    replay.style.display = 'inline-block';
+    reset('top-hor');
   }
 
   function reset(line) {
