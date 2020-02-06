@@ -44,6 +44,12 @@ h3 {
 
 .option-wrapper {
   font-size: 19px;
+  position: relative;
+  right: 8px;
+}
+
+.option-wrapper input {
+  margin-left: 18px;
 }
 
 #start {
