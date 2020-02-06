@@ -4,7 +4,10 @@ let replay = document.getElementById('replay');
 let statusBar = document.getElementById('turn-container');
 let startBoard = document.getElementById('starting-board');
 let usedBoxes = [];
+let win = false;
 let mode;
+let playerXisOn;
+let playerOisOn;
 
 (function begin() {
   let startButton = document.getElementById('start');
@@ -26,9 +29,6 @@ let mode;
   });
 })();
 
-let playerXisOn;
-let playerOisOn;
-
 function getBox(boxId) {
   let num = document.getElementById(boxId);
 
@@ -36,6 +36,8 @@ function getBox(boxId) {
     num,
   };
 }
+
+let validMove = true;
 
 let randomPlay = function () {
   let randomMove = Math.floor((Math.random() * 9) + 1);
@@ -45,9 +47,20 @@ let randomPlay = function () {
 };
 
 let humanPlay = function (event) {
+  console.log(win);
   let whichBox = event.currentTarget;
   makeAMove(whichBox);
+  if (mode === 'one-dumb' && validMove && win === false) {
+    randomPlay();
+  } else if (mode === 'one-smart' && validMove) {
+    smartPlay();
+  }
 };
+
+function smartPlay() {
+  let whichBox = determineWhichBox();
+  makeAMove(whichBox);
+}
 
 function drawOnBoard(playerMode) {
   statusBar.style.display = 'block';
@@ -56,27 +69,10 @@ function drawOnBoard(playerMode) {
   playerXisOn = false;
   console.log(playerMode);
 
-  if (playerMode === 'one-dumb') {
-    for (let move = 1; move <= 9; move++) {
-      if (move % 2 === 1) {
-        for (let i = 1; i <= 9; i++) {
-          let whichBox = getBox(`box${i}`).num;
-          whichBox.addEventListener('click', humanPlay);
-        }
-      } else if (move % 2 === 0) {
-        for (let i = 1; i <= 9; i++) {
-          let whichBox = getBox(`box${i}`).num;
-          whichBox.addEventListener('click', randomPlay);
-        }
-      }
-    }
-  } else if (playerMode === 'two') {
-    for (let i = 1; i <= 9; i++) {
-      let whichBox = getBox(`box${i}`).num;
-      whichBox.addEventListener('click', humanPlay);
-    }
+  for (let i = 1; i <= 9; i++) {
+    let whichBox = getBox(`box${i}`).num;
+    whichBox.addEventListener('click', humanPlay);
   }
-
 }
 
 function makeAMove(whichBox, randomMove) {
@@ -91,6 +87,9 @@ function makeAMove(whichBox, randomMove) {
     playerXisOn = true;
     playerOisOn = false;
     whichPlayer.innerHTML = 'Player X,';
+    usedBoxes.push(whichBox);
+    console.log('first if triggered');
+    validMove = true;
   } else if (playerXisOn && !whichBox.firstElementChild.hasAttribute('class')) {
     let xMark = whichBox.firstElementChild;
     xMark.setAttribute('src', './assets/x-mark.png');
@@ -100,9 +99,11 @@ function makeAMove(whichBox, randomMove) {
     playerXisOn = false;
     whichPlayer.innerHTML = 'Player O,';
     usedBoxes.push(whichBox);
+    console.log('second if triggered');
   } else if (playerOisOn && whichBox.firstElementChild.hasAttribute('class')
-            && usedBoxes.contains(whichBox)) {
+            && usedBoxes.includes(whichBox)) {
     console.log('Clicked again in the same box. Doing nothing.');
+    validMove = false;
   } else {
     randomPlay();
     console.log('rando redid');
@@ -137,7 +138,6 @@ function checkIfWin() {
     for (let i = 1; i <= 9; i++) {
       let whichBox = getBox(`box${i}`).num;
       whichBox.removeEventListener('click', humanPlay);
-      whichBox.removeEventListener('click', randomPlay);
     }
 
     replay.style.display = 'inline-block';
@@ -167,90 +167,108 @@ function checkIfWin() {
       (checkMark(box3, 'circle').fullBox)) {
     triggerWin('player O', 'top-hor');
     getWinLine('top-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box4, 'circle').fullBox) &&
              (checkMark(box5, 'circle').fullBox) &&
              (checkMark(box6, 'circle').fullBox)) {
     triggerWin('player O', 'mid-hor');
     getWinLine('mid-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box7, 'circle').fullBox) &&
              (checkMark(box8, 'circle').fullBox) &&
              (checkMark(box9, 'circle').fullBox)) {
     triggerWin('player O', 'bot-hor');
     getWinLine('bot-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box1, 'circle').fullBox) &&
              (checkMark(box4, 'circle').fullBox) &&
              (checkMark(box7, 'circle').fullBox)) {
     triggerWin('player O', 'left-vert');
     getWinLine('left-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box2, 'circle').fullBox) &&
              (checkMark(box5, 'circle').fullBox) &&
              (checkMark(box8, 'circle').fullBox)) {
     triggerWin('player O', 'mid-vert');
     getWinLine('mid-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box3, 'circle').fullBox) &&
              (checkMark(box6, 'circle').fullBox) &&
              (checkMark(box9, 'circle').fullBox)) {
     triggerWin('player O', 'right-vert');
     getWinLine('right-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box1, 'circle').fullBox) &&
              (checkMark(box5, 'circle').fullBox) &&
              (checkMark(box9, 'circle').fullBox)) {
     triggerWin('player O', 'down-to-right');
     getWinLine('down-to-right').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box3, 'circle').fullBox) &&
              (checkMark(box5, 'circle').fullBox) &&
              (checkMark(box7, 'circle').fullBox)) {
     triggerWin('player O', 'up-to-right');
     getWinLine('up-to-right').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box1, 'x-mark').fullBox) &&
              (checkMark(box2, 'x-mark').fullBox) &&
              (checkMark(box3, 'x-mark').fullBox)) {
     triggerWin('player X', 'top-hor');
     getWinLine('top-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box4, 'x-mark').fullBox) &&
              (checkMark(box5, 'x-mark').fullBox) &&
              (checkMark(box6, 'x-mark').fullBox)) {
     triggerWin('player X', 'mid-hor');
     getWinLine('mid-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box7, 'x-mark').fullBox) &&
              (checkMark(box8, 'x-mark').fullBox) &&
              (checkMark(box9, 'x-mark').fullBox)) {
     triggerWin('player X', 'bot-hor');
     getWinLine('bot-hor').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box1, 'x-mark').fullBox) &&
              (checkMark(box4, 'x-mark').fullBox) &&
              (checkMark(box7, 'x-mark').fullBox)) {
     triggerWin('player X', 'left-vert');
     getWinLine('left-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box2, 'x-mark').fullBox) &&
              (checkMark(box5, 'x-mark').fullBox) &&
              (checkMark(box8, 'x-mark').fullBox)) {
     triggerWin('player X', 'mid-vert');
     getWinLine('mid-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box3, 'x-mark').fullBox) &&
              (checkMark(box6, 'x-mark').fullBox) &&
              (checkMark(box9, 'x-mark').fullBox)) {
     triggerWin('player X', 'right-vert');
     getWinLine('right-vert').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box1, 'x-mark').fullBox) &&
              (checkMark(box5, 'x-mark').fullBox) &&
              (checkMark(box9, 'x-mark').fullBox)) {
     triggerWin('player X', 'down-to-right');
     getWinLine('down-to-right').line.style.display = 'block';
+    win = true;
   } else if ((checkMark(box3, 'x-mark').fullBox) &&
              (checkMark(box5, 'x-mark').fullBox) &&
              (checkMark(box7, 'x-mark').fullBox)) {
     triggerWin('player X', 'up-to-right');
     getWinLine('up-to-right').line.style.display = 'block';
+    win = true;
   } else if (isItATie().tie === true) {
     whichPlayer.innerHTML = 'It\'s a tie';
     message.innerHTML = 'replay?';
     replay.style.display = 'inline-block';
+    console.log('its a tie');
     reset('top-hor');
   }
 
   function reset(line) {
     replay.addEventListener('click', () => {
+      win = false;
       let _winLine = document.getElementById(line);
       _winLine.style.removeProperty('display');
       _winLine.style.display = 'none';
