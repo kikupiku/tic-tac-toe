@@ -5,6 +5,7 @@ let statusBar = document.getElementById('turn-container');
 let startBoard = document.getElementById('starting-board');
 let usedBoxes = [];
 let win = false;
+let validMove = true;
 let mode;
 let playerXisOn;
 let playerOisOn;
@@ -23,59 +24,82 @@ let playerOisOn;
       drawOnBoard('one-dumb');
       mode = 'one-dumb';
     } else if (_smartPC.checked) {
-      alert('under construction');
+      drawOnBoard('one-smart');
+      mode = 'one-smart';
     }
-
   });
 })();
-
-function getBox(boxId) {
-  let num = document.getElementById(boxId);
-
-  return {
-    num,
-  };
-}
-
-let validMove = true;
-
-let randomPlay = function () {
-  let randomMove = Math.floor((Math.random() * 9) + 1);
-
-  let whichBox = getBox(`box${randomMove}`).num;
-  makeAMove(whichBox, randomMove);
-};
-
-let humanPlay = function (event) {
-  console.log(win);
-  let whichBox = event.currentTarget;
-  makeAMove(whichBox);
-  if (mode === 'one-dumb' && validMove && win === false) {
-    randomPlay();
-  } else if (mode === 'one-smart' && validMove) {
-    smartPlay();
-  }
-};
-
-function smartPlay() {
-  let whichBox = determineWhichBox();
-  makeAMove(whichBox);
-}
 
 function drawOnBoard(playerMode) {
   statusBar.style.display = 'block';
   startBoard.style.display = 'none';
   playerOisOn = true;
   playerXisOn = false;
-  console.log(playerMode);
 
   for (let i = 1; i <= 9; i++) {
-    let whichBox = getBox(`box${i}`).num;
-    whichBox.addEventListener('click', humanPlay);
+    let whichBox = getBox(i);
+    whichBox.addEventListener('click', makeATurn);
   }
 }
 
-function makeAMove(whichBox, randomMove) {
+function getBox(idNumber) {
+  return document.getElementById(`box${idNumber}`);
+}
+
+const randomPlay = () => {
+  let whichBox = pickRandomBox();
+  makeAMove(whichBox);
+};
+
+function pickRandomBox() {
+  let randomNumber = Math.floor((Math.random() * 9) + 1);
+  let whichBox = getBox(randomNumber);
+  return whichBox;
+}
+
+const makeATurn = event => {
+  humanPlay(event.currentTarget);
+  if (mode === 'one-dumb' && validMove && win === false) {
+    dumbComputerPlay();
+  } else if (mode === 'one-smart' && validMove) {
+    smartComputerPlay();
+  }
+};
+
+const humanPlay = (whichBox) => {
+  makeAMove(whichBox);
+  checkIfWin();
+};
+
+const dumbComputerPlay = () => {
+  randomPlay();
+  checkIfWin();
+};
+
+const smartComputerPlay = () => {
+  smartPlay();
+  checkIfWin();
+};
+
+// function smartPlay() {
+//   let whichBox = determineWhichBox();
+//   makeAMove(whichBox);
+// }
+//
+// function determineWhichBox() {
+//   function playAMockMove () {
+//     let areFull = [];
+//     for (let i = 1; i < 9; i++) {
+//       let _newFull = getBox(i).firstElementChild.hasAttribute('class');
+//       areFull.push(_newFull);
+//     }
+//       return
+//   }
+//
+//   return whichBox;
+// }
+
+function makeAMove(whichBox) {
   playerOisOn ? playerXisOn = false : playerXisOn;
   playerXisOn ? playerOisOn = false : playerOisOn;
 
@@ -109,7 +133,6 @@ function makeAMove(whichBox, randomMove) {
     console.log('rando redid');
   }
 
-  checkIfWin();
 }
 
 function checkIfWin() {
@@ -136,7 +159,7 @@ function checkIfWin() {
     message.innerHTML = 'wins!';
 
     for (let i = 1; i <= 9; i++) {
-      let whichBox = getBox(`box${i}`).num;
+      let whichBox = getBox(i);
       whichBox.removeEventListener('click', humanPlay);
     }
 
@@ -144,12 +167,12 @@ function checkIfWin() {
     reset(line);
   }
 
-  let isItATie = function () {
+  let isItATie = () => {
     let boxes = [];
     let tie;
     for (let i = 1; i <= 9; i++) {
-      if (getBox(`box${i}`).num.firstElementChild.hasAttribute('class')) {
-        boxes.push(getBox(`box${i}`).num);
+      if (getBox(i).firstElementChild.hasAttribute('class')) {
+        boxes.push(getBox(i));
       }
     }
 
@@ -274,8 +297,8 @@ function checkIfWin() {
       _winLine.style.display = 'none';
 
       for (let i = 1; i <= 9; i++) {
-        getBox(`box${i}`).num.firstElementChild.removeAttribute('class');
-        getBox(`box${i}`).num.firstElementChild.setAttribute('src', './assets/transparent.png');
+        getBox(i).firstElementChild.removeAttribute('class');
+        getBox(i).firstElementChild.setAttribute('src', './assets/transparent.png');
       }
 
       whichPlayer.innerHTML = 'Player O';
@@ -283,7 +306,5 @@ function checkIfWin() {
       drawOnBoard(mode);
       replay.style.display = 'none';
     });
-
   };
-
 }
