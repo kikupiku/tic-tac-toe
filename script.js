@@ -81,23 +81,32 @@ const smartComputerPlay = () => {
   checkIfWin();
 };
 
-// function smartPlay() {
-//   let whichBox = determineWhichBox();
-//   makeAMove(whichBox);
-// }
-//
-// function determineWhichBox() {
-//   function playAMockMove () {
-//     let areFull = [];
-//     for (let i = 1; i < 9; i++) {
-//       let _newFull = getBox(i).firstElementChild.hasAttribute('class');
-//       areFull.push(_newFull);
-//     }
-//       return
-//   }
-//
-//   return whichBox;
-// }
+function smartPlay() {
+  let whichBox = determineBestMove(usedBoxes, true);
+  makeAMove(whichBox);
+}
+
+let checkIfTerminalNode = () => {
+  
+  return {
+    terminalNode,
+  };
+}
+
+function determineBestMove(startingNode, maximizingPlayer) {
+  let node = [...startingNode];
+  if (node.length === 9 || terminalNode)
+  //   function playAMockMove () {
+  //     let areFull = [];
+  //     for (let i = 1; i < 9; i++) {
+  //       let _newFull = getBox(i).firstElementChild.hasAttribute('class');
+  //       areFull.push(_newFull);
+  //     }
+  //       return
+  //   }
+  //
+  //   return whichBox;
+}
 
 function makeAMove(whichBox) {
   playerOisOn ? playerXisOn = false : playerXisOn;
